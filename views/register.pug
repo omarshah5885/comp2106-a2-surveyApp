@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1 Register
+  form(method='POST', action='/users/register')
+    #form-group
+      label Email:
+      input.form-control(name='email', type='email')
+    #form-group
+      label Password:
+      input.form-control(name='password',type='password')
+    #form-group
+      label Confirm:
+      input.form-control(name='password2',type='password')
+    br
+    button.btn.btn-primary(type='submit') Create Account
