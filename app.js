@@ -5,8 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 var flash = require('connect-flash');
-const expressValidator = require('express-validator');
-
+var expressValidator = require('express-validator');
 var session = require('express-session');
 var passport = require('passport');
 
@@ -29,32 +28,59 @@ db.on('error', err => console.log(err));
 db.on('open', () => console.log('Connected to mongodb'));
 
 
-// route files
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
 // init app
 var app = express();
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// set body parser and public folder
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(flash());
-app.use(expressValidator());
+
+// express session middleware
 app.use(session({
   secret: 'keyboard cat',
-  resave: false,
+  resave: true,
   saveUninitialized: true,
-  cookie: { secure: false }
+}));
+
+// connect-flash and express messages middleware 
+app.use(flash());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
+// express validator middleware 
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
 }));
 
 
+
+// route files
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
