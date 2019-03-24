@@ -5,12 +5,12 @@ block content
   form(method='POST', action='/users/register')
     #form-group
       label Email:
-      input.form-control(name='email', type='email')
+      input.form-control(name='email', required, type='email')
     #form-group
       label Password:
-      input.form-control(name='password',type='password')
+      input.form-control(name='password',required, type='password')
     #form-group
       label Confirm:
-      input.form-control(name='password2',type='password')
+      input.form-control(name='password2',required, type='password')
     br
     button.btn.btn-primary(type='submit') Create Account

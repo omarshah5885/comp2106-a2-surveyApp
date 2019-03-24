@@ -4,13 +4,16 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
-// var flash = require('connect-flash');
-// var session = require('express-session');
-// var passport = require('passport');
+var flash = require('connect-flash');
+const expressValidator = require('express-validator');
+
+var session = require('express-session');
+var passport = require('passport');
+
 
 // connect to mongoose db
 mongoose.connect(
-  'mongodb+srv://user:Abc123!@cluster0-rltl0.mongodb.net/test?retryWrites=true ',
+  'mongodb+srv://user:Abc123!@cluster0-rltl0.mongodb.net/surveyApp?retryWrites=true',
   {
     useNewUrlParser: true
   }
@@ -20,15 +23,17 @@ mongoose.connect(
 var db = mongoose.connection;
 
 // console log the error when db emits an error
-db.on('error', console.error.bind(console, 'Connection Error'));
+db.on('error', err => console.log(err));
 
 // console log connected once when db emits open
-db.once('open', callback => console.log('Connected to mongodb'));
+db.on('open', () => console.log('Connected to mongodb'));
 
 
 // route files
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+// init app
 var app = express();
 
 // view engine setup
@@ -40,6 +45,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
+app.use(expressValidator());
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
+
 
 
 app.use('/', indexRouter);
