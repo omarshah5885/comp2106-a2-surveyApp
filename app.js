@@ -8,11 +8,12 @@ var flash = require('connect-flash');
 var expressValidator = require('express-validator');
 var session = require('express-session');
 var passport = require('passport');
+var config = require('./config/database');
 
 
 // connect to mongoose db
 mongoose.connect(
-  'mongodb+srv://user:Abc123!@cluster0-rltl0.mongodb.net/surveyApp?retryWrites=true',
+  config.database,
   {
     useNewUrlParser: true
   }
@@ -76,6 +77,18 @@ app.use(expressValidator({
   }
 }));
 
+// passport config
+require('./config/passport')(passport);
+
+// passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// set a global user variable for all the pages
+app.get('*', (req, res, next) => {
+  res.locals.user = req.isAuthenticated();
+  next();
+});
 
 
 // route files

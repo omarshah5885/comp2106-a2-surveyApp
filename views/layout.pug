@@ -2,9 +2,22 @@ doctype html
 html
   head
     title= title
-    // link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css', integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS', crossorigin='anonymous')
     link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.7.0/css/all.css', integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ', crossorigin='anonymous')
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css', integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS', crossorigin='anonymous')
+    // link(rel='stylesheet', href='/stylesheets/style.css')
+    // styling error messages for custom classes that come from express-validator w/ bootstrap theme
+    style.
+      .alert-error{
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
+      }
+
+      .alert-success_msg{
+        color: #3c763d;
+        background-color: #dff0d8;
+        border-color: #d6e9c6;
+      }    
   body
     //- Navbar Start
     nav.navbar.navbar-expand-lg.navbar-light.bg-light
@@ -18,14 +31,20 @@ html
               | Home
               span.sr-only (current)
         ul.nav.navbar-nav.navbar-right
-          a.nav-item.nav-link(href='/users/register') Register
-          a.nav-item.nav-link(href='/users/login') Login
+          if user
+            a.nav-item.nav-link(href='/users/logout') Logout
+          else
+            a.nav-item.nav-link(href='/users/register') Register
+            a.nav-item.nav-link(href='/users/login') Login
     .container
+      //- messages is a method from express messages which works in pair with flash. it is reading the msessage partial in the views
       != messages('message', locals)
+      //- errors is a variable i setup using express validator in the users route
       if errors
         each error in errors
           div.alert.alert-danger #{error.msg}
     block content
+    br
     br
     hr
     footer
