@@ -1,0 +1,27 @@
+extends ../layout
+- 
+  let addQuestion = document.querySelectorAll('button')[1];
+
+block content
+  .container
+    h1 Create a Survey
+    form(method="post")
+      .form-group
+        label(for="surveyTitle") Survey Title:
+        input#name.form-control(type="text", name="surveyTitle")
+      .form-group.col-md-4
+        label(for='questionType') Question Type
+        select#questionType.form-control(name='questionType')
+          option(selected='true', value=1) Multiple Choice
+          option(value=2) Short Answer
+      .form-group
+        label(for="questionEntry") Question
+        input#questionEntry.form-control(name="questionEntry")
+      .form-group
+        button.btn.btn-primary(type="submit") Add Question 
+      .form-group
+        button.btn.btn-success(type="submit") Create Survey
+    //- if questionType=1
+    //-   div#multiplechoice
+    //-     .form-group
+    //-       input

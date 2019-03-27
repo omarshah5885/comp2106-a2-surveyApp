@@ -94,10 +94,11 @@ app.get('*', (req, res, next) => {
 // route files
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var surveyRouter = require('./routes/surveys');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/surveys', surveyRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
