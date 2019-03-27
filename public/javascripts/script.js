@@ -33,8 +33,35 @@ addQuestion.addEventListener('click', (e) => {
 addOption.addEventListener('click', (e) => {
   e.preventDefault();
   const optionMarkup = `<input class="form-control" id="option1" name="option1" placeholder="enter option" />`;
-  const newOption = document.querySelector('.multipleChoice .form-group');
+  const newOption = document.querySelector('.multipleChoice1 .form-group');
   newOption.insertAdjacentHTML('beforeend', optionMarkup);
 });
 
+let questionType = document.querySelector('#questionType');
+questionType.addEventListener('change', e => {
+  if (questionType.value == 2) {
+  document.querySelector('div.multipleChoice1').innerHTML = '';
+  document.querySelector('div.multipleChoice1 + .form-group').innerHTML = '';
+  } else {
+    const mcMarkup = `<div class="multipleChoice1">
+    <div class="form-group"><input class="form-control" id="option1" name="option1" placeholder="enter option" /><input class="form-control" id="option1" name="option1" placeholder="enter option" /></div>
+  </div>
+  <div class="form-group"><button class="btn btn-danger" id="optionButton1" type="submit" data-index="1">Add Option</button></div>`;
+    const newOption = document.querySelector('.multipleChoice1');
+    newOption.insertAdjacentHTML('beforeend', mcMarkup);
+    
+    let addOption = document.querySelector(`#optionButton1`);
 
+    addOption.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log(addOption);
+      const index = addOption.dataset.index;
+      const optionMarkup = `<input class="form-control" id="option${index}" name="option${index}" placeholder="enter option" />`;
+      const newOption = document.querySelector(`.multipleChoice${index} .form-group`);
+      newOption.insertAdjacentHTML('beforeend', optionMarkup);
+    });
+  
+
+  }
+  
+});
