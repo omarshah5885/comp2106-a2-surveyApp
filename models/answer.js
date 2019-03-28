@@ -3,13 +3,10 @@ const Schema = mongoose.Schema;
 
 const Answer = new Schema({
 	questionId: {
-		type: ObjectId,
+		type: String,
 		required: true
 	},
-	shortAnswer:{
-		type: String
-	},
-	mcSelection: {
+	answer:{
 		type: String
 	}
 });
