@@ -6,7 +6,7 @@ let questionCounter = 2;
 
 addQuestion.addEventListener('click', (e) => {
   e.preventDefault();
-  const questionMarkup = `<div class="form-group col-md-4"><label for="questionType">Question Type</label><select class="form-control" id="questionType" name="questionType"><option selected="true" value="1">Multiple Choice</option><option value="2">Short Answer</option></select></div>
+  const questionMarkup = `<div class="form-group col-md-4"><label for="questionType${questionCounter}">Question Type</label><select class="form-control" id="questionType${questionCounter}" name="questionType" data-index="${questionCounter}"><option selected="true" value="1">Multiple Choice</option><option value="2">Short Answer</option></select></div>
   <div class="form-group"><label for="questionEntry">Question</label><input class="form-control" id="questionEntry" name="questionEntry" /></div>
   <div class="multipleChoice${questionCounter}">
   <div class="form-group"><input class="form-control" id="option${questionCounter}" name="option${questionCounter}" placeholder="enter option" /><input class="form-control" id="option${questionCounter}" name="option${questionCounter}" placeholder="enter option" /></div>
@@ -25,9 +25,37 @@ addQuestion.addEventListener('click', (e) => {
     const newOption = document.querySelector(`.multipleChoice${index} .form-group`);
     newOption.insertAdjacentHTML('beforeend', optionMarkup);
   });
-  questionCounter++
-  
 
+  let questionType = document.querySelector(`#questionType${questionCounter}`);
+  questionType.addEventListener('change', e => {
+    const index = questionType.dataset.index;
+    if (questionType.value == 2) {
+    document.querySelector(`div.multipleChoice${index}`).innerHTML = '';
+    document.querySelector(`div.multipleChoice${index} + .form-group`).innerHTML = '';
+    } else {
+      const mcMarkup = `<div class="multipleChoice${index}">
+      <div class="form-group"><input class="form-control" id="option${index}" name="option${index}" placeholder="enter option" /><input class="form-control" id="option${index}" name="option${index}" placeholder="enter option" /></div>
+    </div>
+    <div class="form-group"><button class="btn btn-danger" id="optionButton${index}" type="submit" data-index="${index}">Add Option</button></div>`;
+      const newOption = document.querySelector(`.multipleChoice${index}`);
+      newOption.insertAdjacentHTML('beforeend', mcMarkup);
+      
+      let addOption = document.querySelector(`#optionButton${index}`);
+  
+      addOption.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log(addOption);
+        const index = addOption.dataset.index;
+        const optionMarkup = `<input class="form-control" id="option${index}" name="option${index}" placeholder="enter option" />`;
+        const newOption = document.querySelector(`.multipleChoice${index} .form-group`);
+        newOption.insertAdjacentHTML('beforeend', optionMarkup);
+      });
+    } // end else
+  }); // end event listener
+
+
+
+  questionCounter++;
 });
 
 addOption.addEventListener('click', (e) => {
@@ -60,8 +88,5 @@ questionType.addEventListener('change', e => {
       const newOption = document.querySelector(`.multipleChoice${index} .form-group`);
       newOption.insertAdjacentHTML('beforeend', optionMarkup);
     });
-  
-
-  }
-  
-});
+  } // end else
+}); // end event listener

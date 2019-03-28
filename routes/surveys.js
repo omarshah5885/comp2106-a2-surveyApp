@@ -41,7 +41,7 @@ router.post('/create', (req, res, next) => {
     // ensuring each question entry from form is contained inside the question object 
     question.questionEntry = questionEntry;
 
-    if (question.questionType==1) {
+    if (question.questionType=="1") {
       question.multipleChoices = req.body['option' + ++index].map( item => {
         const multiplechoice = new MultipleChoice();
         multiplechoice.option = item;

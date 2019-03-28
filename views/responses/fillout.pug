@@ -1,0 +1,18 @@
+extends ../layout 
+
+block content
+	form(method='post')
+		h1=survey.surveyTitle
+		ol
+			each question in survey.questions
+				li=question.questionEntry
+				if question.questionType==1
+					each choice in question.multipleChoices
+						.form-check
+							input.form-check-input(type='radio', name='exampleRadios', value='choice.option', checked='')
+							label.form-check-label(for='exampleRadios1')
+								| #{choice.option}
+				else 
+					textarea(name="random", cols="30", rows="10")
+		button.btn.btn-primary(type='submit') Submit
+		
