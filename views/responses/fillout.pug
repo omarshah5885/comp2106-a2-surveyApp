@@ -9,10 +9,12 @@ block content
 				if question.questionType==1
 					each choice in question.multipleChoices
 						.form-check
+							//- the name is set to question._id which is the GUID that comes from the questions array inside Survey model
 							input.form-check-input(type='radio', name=''+question._id, value=''+choice.option, checked='')
-							label.form-check-label(for='exampleRadios1')
+							label.form-check-label(for=''+question._id)
 								| #{choice.option}
 				else 
-					textarea(name=''+question._id, cols="30", rows="10")
+					textarea(name=''+question._id, cols="50", rows="10")
+		//- hidden field value comes from Survey _id GUID set in mongodb
 		input(name="id", type="hidden", value=''+survey._id)
 		button.btn.btn-primary(type='submit') Submit

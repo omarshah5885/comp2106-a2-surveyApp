@@ -6,7 +6,7 @@ const Answer = new Schema({
 		type: String,
 		required: true
 	},
-	answer:{
+	response:{
 		type: String
 	}
 });

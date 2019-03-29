@@ -10,12 +10,12 @@ mixin question()
     .form-group
       label(for="questionEntry") Question
       input#questionEntry.form-control(name="questionEntry")
-      div.multipleChoice1
-        .form-group
-          input#option.form-control(name="option1", placeholder="enter option")
-          input#option.form-control(name="option1", placeholder="enter option")
+    div.multipleChoice1
       .form-group
-        button.btn.btn-danger(type="submit") Add Option
+        input#option.form-control(name="option1", placeholder="enter option")
+        input#option.form-control(name="option1", placeholder="enter option")
+    .form-group
+      button.btn.btn-danger(type="submit") Add Option
 
 block content
   .container
@@ -23,9 +23,12 @@ block content
     form(method="post")
       .form-group
         label(for="surveyTitle") Survey Title:
-        input#name.form-control(type="text", name="surveyTitle")
+        input#surveyTitle.form-control(type="text", name="surveyTitle")
       +question()
       hr
+      .form-group 
+        label(for="endDate") Expiry Date:
+        input#endDate.form-control(type="date", name="endDate")
       .form-group
         button.btn.btn-primary(type="submit") Add Question 
       .form-group
