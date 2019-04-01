@@ -49,6 +49,21 @@ router.post('/:id', (req, res, next) => {
 		res.redirect('/surveys/');
 	});
 });
+
+router.get('/stats/:Id', (req, res, next) => {
+	Response.find(req.params.id).populate('surveyTitle').then( responses => {
+	  res.render('responses/stats', {responses});
+  });
+});
+
+
+
+// User.find()
+//     .populate('surveyTitle') // multiple path names in one requires mongoose >= 3.6
+//     .exec(function(err, usersDocuments) {
+//         // handle err
+//         // usersDocuments formatted as desired
+//     });
   
 	
 module.exports = router;
