@@ -6,6 +6,16 @@ let Response = require('../models/response');
 let Answer = require('../models/answer');
 
 
+// enable the flat function https://stackoverflow.com/questions/50993498/flat-is-not-a-function-whats-wrong
+Object.defineProperty(Array.prototype, 'flat', {
+	value: function(depth = 1) {
+	  return this.reduce(function (flat, toFlatten) {
+		return flat.concat((Array.isArray(toFlatten) && (depth>1)) ? toFlatten.flat(depth-1) : toFlatten);
+	  }, []);
+	}
+});
+
+
 // Get a specific survey from created surveys list 
 router.get('/:id', (req, res, next) => {
 	Survey.findById(req.params.id).then( survey => {
@@ -51,19 +61,36 @@ router.post('/:id', (req, res, next) => {
 });
 
 router.get('/stats/:Id', (req, res, next) => {
-	Response.find(req.params.id).populate('surveyTitle').then( responses => {
-	  res.render('responses/stats', {responses});
+	// Survey.find().then( surveys => {
+	// res.render('responses/stats', {surveys})
+	// });
+	Response.find(req.params.id).sort('surveyId').then( responses => {
+		// return array of answers
+		let response = responses.map( (response, index) => {
+			return response.answers;
+		});
+		
+		// flaten array of answers 
+		flatResponse = response.flat(2);
+		let answer = flatResponse.map( (answer, index) => {
+			return answer.response;
+		  });
+
+		// use reduce method to collate all the responses 
+		const answers = answer.reduce( (obj, response) => {
+			// condition checks to see if answer exists; if not, assign obj w/ key of that answer a value of 0
+			if( !obj[response] ) obj[response] = 0;
+			// add to that list of answers in order to keep track
+			obj[response]++;
+			return obj;
+		  }, {} );
+
+		  // stringify responses to display onto html
+		  answersString = JSON.stringify(answers, null, 2);
+		  console.log(answers);
+		res.render('responses/stats', {answers: answersString});
   });
 });
 
-
-
-// User.find()
-//     .populate('surveyTitle') // multiple path names in one requires mongoose >= 3.6
-//     .exec(function(err, usersDocuments) {
-//         // handle err
-//         // usersDocuments formatted as desired
-//     });
-  
 	
 module.exports = router;

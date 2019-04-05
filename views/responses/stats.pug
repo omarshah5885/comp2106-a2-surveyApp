@@ -1,10 +1,7 @@
 extends ../layout 
 
 block content
-	each response in responses 
-		li=response.answers[0].response
-	//- 	if response.surveyId == "5c9c061d27b0852c90be210e"
-	//- 		li #{response.answers[0].response}
-		//- if response.surveyId == "5c9d7a87fd567604b081e154"
-		//- 	h2 survey 2
-		//- 	li #{response.answers[0].response}
+	.container
+		pre.results
+			#{answers}
+
